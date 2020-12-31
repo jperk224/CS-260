@@ -106,7 +106,7 @@ int main() {
         cout << "Enter choice: ";
         cin >> choice;
 
-        // FIXME (5): Complete the method calls then test the program
+        // Complete the method calls then test the program based on user input
         switch (choice) {
             case 1:
             	userBid = getBid();
