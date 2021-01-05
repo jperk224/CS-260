@@ -40,10 +40,8 @@ double strToDouble(string str, char ch) {
     return atof(str.c_str());
 }
 
-// Display the bid values passed in data structure
-
 /**
- * Display the bid information
+ * Display information for a given Bid instance
  *
  * @param Bid data structure containing the bid info
  */
@@ -57,10 +55,8 @@ void displayBid(Bid userBid) {
     return;
 }
 
-// Store input values in Bid data structure
-
 /**
- * Prompt user for bid information
+ * Prompt user for bid information and store input values in Bid data structure
  *
  * @return Bid data structure containing the bid info
  */
@@ -90,10 +86,10 @@ Bid getBid() {
 
 int main() {
 
-    // Declare instance of Bid data structure to hold bid information
+    // Bid instance to hold bid information
 	Bid userBid;
 
-    // loop to display menu until exit chosen
+    // display menu until exit chosen
     int choice = 0;
     while (choice != 9) {
         cout << "Menu:" << endl;
@@ -103,7 +99,7 @@ int main() {
         cout << "Enter choice: ";
         cin >> choice;
 
-        // Complete the method calls then test the program based on user input
+        // Completed method calls to test the program based on user input
         switch (choice) {
             case 1:
             	userBid = getBid();
