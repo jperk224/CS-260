@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : Lab2-2.cpp
-// Author      : Your Name
+// Author      : Jeff Perkinson
 // Version     : 1.0
 // Copyright   : Copyright © 2017 SNHU COCE
 // Description : Lab 2-2 Up to Speed in C++, Part 2
@@ -9,8 +9,11 @@
 #include <algorithm>
 #include <iostream>
 #include <time.h>
+#include <ctime>	// library needed for CLOCKS_PER_SEC
+// (https://en.cppreference.com/w/cpp/chrono/c/CLOCKS_PER_SEC)
 
-// FIXME (1): Reference the CSVParser library
+// Reference the CSVParser library
+#include "CSVparser.hpp"
 
 using namespace std;
 
@@ -74,19 +77,29 @@ Bid getBid() {
  * @param csvPath the path to the CSV file to load
  * @return a container holding all the bids read
  */
-?retval? loadBids(string csvPath) {
-	// FIXME (2): Define a vector data structure to hold a collection of bids.
+vector<Bid> loadBids(string csvPath) {
+	// Define a vector data structure to hold a collection of bids.
 
-    ?type? ?variable?;
+    vector<Bid> bids;
 
     // initialize the CSV Parser using the given path
     csv::Parser file = csv::Parser(csvPath);
 
 	// loop to read rows of a CSV file
-	for (int i = 0; i < file.rowCount(); i++) {
-        // FIXME (3): create a data structure to hold data from each row and add to vector
+	for (unsigned int i = 0; i < file.rowCount(); i++) {
+        // create a data structure to hold data from each row and add to vector
+		Bid bidRecord;
+		bidRecord.title = file[i][0];
+		bidRecord.fund = file[i][8];
+		bidRecord.amount = strToDouble(file[i][4], '$');
+
+		bids.push_back(bidRecord);
     }
-    return ?variable?;
+
+	// Output number of records read
+	cout << bids.size() << " bids read" << endl;
+
+    return bids;
 }
 
 /**
@@ -102,9 +115,6 @@ double strToDouble(string str, char ch) {
     return atof(str.c_str());
 }
 
-/**
- * The one and only main() method
- */
 int main(int argc, char* argv[]) {
 
     // process command line arguments
@@ -117,11 +127,11 @@ int main(int argc, char* argv[]) {
         csvPath = "eBid_Monthly_Sales_Dec_2016.csv";
     }
 
-    // FIXME (4): Define a vector to hold all the bids
-    ?type? ?variable?;
+    // Define a vector to hold all the bids
+    vector<Bid> bidRecords;
 
-    // FIXME (7a): Define a timer variable
-    ?type? ?variable?;
+    // Define a timer variable
+    clock_t ticks;
 
     int choice = 0;
     while (choice != 9) {
@@ -139,18 +149,27 @@ int main(int argc, char* argv[]) {
 
             break;
         case 2:
-            // FIXME (7b): Initialize a timer variable before loading bids
+            // Initialize a timer variable before loading bids
+        	ticks = clock(); 	// current clock time prior to method call
 
-            // FIXME (5): Complete the method call to load the bids
+            // Complete the method call to load the bids
+        	bidRecords = loadBids(csvPath);
 
-            // FIXME (7c): Calculate elapsed time and display result
+
+            // Calculate elapsed time and display result
+        	// current clock time less initial clock time gives elapsed ticks
+        	ticks = clock() - ticks;
+
+        	cout << "time: " << ticks << " milliseconds" << endl;
+        	cout << "time: " << ticks * (1.0/CLOCKS_PER_SEC) << " seconds" << endl;
 
             break;
         case 3:
-            // FIXME (6): Loop and display the bids read
-            for (int i = 0; i < ?variable?.?length?; ++i) {
-            	displayBid(?variable?);
+            // Display the bids read
+            for (unsigned int i = 0; i < bidRecords.size(); ++i) {
+            	displayBid(bidRecords.at(i));
             }
+
             cout << endl;
 
             break;
