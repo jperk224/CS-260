@@ -19,7 +19,7 @@ using std::string;
 // Global definitions visible to all methods and classes
 //============================================================================
 
-// (1): Data structure to hold bid information together as a single unit.
+// Data structure to hold bid information together as a single unit.
 struct Bid {
 	string articleTitle;
 	string fund;
@@ -40,7 +40,7 @@ double strToDouble(string str, char ch) {
     return atof(str.c_str());
 }
 
-// (4): Display the bid values passed in data structure
+// Display the bid values passed in data structure
 
 /**
  * Display the bid information
@@ -57,7 +57,7 @@ void displayBid(Bid userBid) {
     return;
 }
 
-// (3): Store input values in Bid data structure
+// Store input values in Bid data structure
 
 /**
  * Prompt user for bid information
@@ -88,9 +88,6 @@ Bid getBid() {
     return userBid;
 }
 
-/**
- * The one and only main() method
- */
 int main() {
 
     // Declare instance of Bid data structure to hold bid information
