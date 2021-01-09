@@ -18,9 +18,6 @@ using namespace std;
 // Global definitions visible to all methods and classes
 //============================================================================
 
-// forward declarations
-double strToDouble(string str, char ch);
-
 // define a structure to hold bid information
 struct Bid {
     string bidId; // unique identifier
@@ -31,6 +28,10 @@ struct Bid {
         amount = 0.0;
     }
 };
+
+// forward declarations
+double strToDouble(string str, char ch);
+void displayBid(Bid bid);
 
 //============================================================================
 // Linked-List class definition
@@ -81,9 +82,9 @@ public:
 LinkedList::LinkedList() {
     // FIXME (2): Initialize housekeeping variables
 	// list is initially empty (i.e. no head or tail, and no elements)
-	head = nullptr;
-	tail = nullptr;
-	size = 0;
+	this->head = nullptr;
+	this->tail = nullptr;
+	this->size = 0;
 }
 
 /**
@@ -103,25 +104,41 @@ void LinkedList::Append(Bid bid) {
 	Node* node = new Node(bid);
 
 	// Append the node to the list
-	if (head == nullptr) {		// list is empty
-		head = node;
+	if (this->head == nullptr) {		// list is empty
+		this->head = node;
 	} else {
-		if (tail != nullptr) {	// tail presently points to a node
-			tail->next = node;	// present tail is no longer tail
+		if (this->tail != nullptr) {	// tail presently points to a node
+			this->tail->next = node;	// present tail is no longer tail
 		}
 	}
 
-	tail = node;				// appended node is new tail
-	size++;						// list size increases by node added
+	this->tail = node;					// appended node is new tail
+	this->size++;						// list size increases by node added
 
 	return;
 }
 
 /**
  * Prepend a new bid to the start of the list
+ * @param bid The bid to be prepended to the list
  */
 void LinkedList::Prepend(Bid bid) {
     // FIXME (4): Implement prepend logic
+
+	// initialize a new node to hold the bid
+	Node* node = new Node(bid);
+
+	// Prepend the node to the beginning of the list
+	if (this->head == nullptr) {		// list is empty
+		this->tail = node;
+	} else {
+		node->next = this->head;
+	}
+
+	this->head = node;					// prepended node is new head
+	this-> size++;						// list size increases by node added
+
+	return;
 }
 
 /**
@@ -129,6 +146,15 @@ void LinkedList::Prepend(Bid bid) {
  */
 void LinkedList::PrintList() {
     // FIXME (5): Implement print logic
+	Node* currentNode = this->head;		// start at the list head
+
+	// iterate over each list node in succession
+	while (currentNode != nullptr) {
+		displayBid(currentNode->bid);
+		currentNode = currentNode->next;
+	}
+
+	return;
 }
 
 /**
@@ -153,7 +179,7 @@ Bid LinkedList::Search(string bidId) {
  * Returns the current size (number of elements) in the list
  */
 int LinkedList::Size() {
-    return size;
+    return this->size;
 }
 
 //============================================================================
@@ -282,6 +308,7 @@ int main(int argc, char* argv[]) {
         cout << "  3. Display All Bids" << endl;
         cout << "  4. Find Bid" << endl;
         cout << "  5. Remove Bid" << endl;
+        cout << "  6. Prepend Bid" << endl;
         cout << "  9. Exit" << endl;
         cout << "Enter choice: ";
         cin >> choice;
@@ -334,6 +361,13 @@ int main(int argc, char* argv[]) {
             bidList.Remove(bidKey);
 
             break;
+
+        case 6:
+        	bid = getBid();
+        	bidList.Prepend(bid);
+        	displayBid(bid);
+
+        	break;
         }
     }
 
