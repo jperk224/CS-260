@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : LinkedList.cpp
-// Author      : Your Name
+// Author      : Jeff Perkinson
 // Version     : 1.0
 // Copyright   : Copyright © 2017 SNHU COCE
 // Description : Lab 3-3 Lists and Searching
@@ -44,6 +44,25 @@ class LinkedList {
 
 private:
     // FIXME (1): Internal structure for list entries, housekeeping variables
+	// (i.e. the list node)
+	struct Node {
+		Bid bid;			// the actual Bid
+		Node* next;			// subsequent Bid pointer
+
+		// constructors
+		Node() {			// initialize a nullptr by default
+			next = nullptr;
+		}
+
+		Node(Bid bid) {		// initialize a node with a bid
+			this->bid = bid;
+			next = nullptr;
+		}
+	};
+
+	Node* head;				// head pointer (i.e. start of list)
+	Node* tail;				// tail pointer (i.e. end of list)
+	int size;				// count of list elements
 
 public:
     LinkedList();
@@ -61,6 +80,10 @@ public:
  */
 LinkedList::LinkedList() {
     // FIXME (2): Initialize housekeeping variables
+	// list is initially empty (i.e. no head or tail, and no elements)
+	head = nullptr;
+	tail = nullptr;
+	size = 0;
 }
 
 /**
@@ -71,9 +94,27 @@ LinkedList::~LinkedList() {
 
 /**
  * Append a new bid to the end of the list
+ * @param bid The bid to be appended to the list
  */
 void LinkedList::Append(Bid bid) {
     // FIXME (3): Implement append logic
+
+	// initialize a new node to hold the bid
+	Node* node = new Node(bid);
+
+	// Append the node to the list
+	if (head == nullptr) {		// list is empty
+		head = node;
+	} else {
+		if (tail != nullptr) {	// tail presently points to a node
+			tail->next = node;	// present tail is no longer tail
+		}
+	}
+
+	tail = node;				// appended node is new tail
+	size++;						// list size increases by node added
+
+	return;
 }
 
 /**
@@ -170,7 +211,7 @@ void loadBids(string csvPath, LinkedList *list) {
 
     try {
         // loop to read rows of a CSV file
-        for (int i = 0; i < file.rowCount(); i++) {
+        for (unsigned int i = 0; i < file.rowCount(); i++) {
 
             // initialize a bid using data from current row (i)
             Bid bid;
@@ -179,9 +220,10 @@ void loadBids(string csvPath, LinkedList *list) {
             bid.fund = file[i][8];
             bid.amount = strToDouble(file[i][4], '$');
 
+            // output for testing
             //cout << bid.bidId << ": " << bid.title << " | " << bid.fund << " | " << bid.amount << endl;
 
-            // add this bid to the end
+            // add bid to the end of the LinkedList argument provided
             list->Append(bid);
         }
     } catch (csv::Error &e) {
