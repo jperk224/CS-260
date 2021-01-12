@@ -175,7 +175,8 @@ void LinkedList::Remove(string bidId) {
 		if (this->head != nullptr) {
 			if (head->bid.bidId.compare(bidId) == 0) {
 				Node* tempPointer = this->head;
-				this->head = this->head->next;
+				delete head;
+				this->head = tempPointer->next;
 				delete tempPointer;
 				return;
 			}
@@ -191,9 +192,9 @@ void LinkedList::Remove(string bidId) {
 			// update the pointers and remove the 'next' bid
 			if (currentNode->next->bid.bidId.compare(bid.bidId) == 0) {
 				Node* tempPointer = currentNode->next;
-				currentNode->next = currentNode->next->next;
+				delete currentNode->next;
+				currentNode->next = tempPointer->next;
 				delete tempPointer;
-				// early return
 				return;
 			}
 
