@@ -171,6 +171,16 @@ void LinkedList::Remove(string bidId) {
 		cout << "Removed bid " << bidId << endl;
 		displayBid(bid);				// display the bid removed
 
+		// special case list head
+		if (this->head != nullptr) {
+			if (head->bid.bidId.compare(bidId) == 0) {
+				Node* tempPointer = this->head;
+				this->head = this->head->next;
+				delete tempPointer;
+				return;
+			}
+		}
+
 		// remove the bid
 		// Iterate over the bids
 		Node* currentNode = this->head;		// start at the list head
@@ -340,10 +350,12 @@ int main(int argc, char* argv[]) {
         break;
     default:
         csvPath = "eBid_Monthly_Sales_Dec_2016.csv";
+        // testing keys
 //        bidKey = "98109";
 //        bidKey = "98223";
-        bidKey = "97991";
+//        bidKey = "97991";
 //        bidKey = "12345";  // For testing empty case
+        bidKey = "98346";
     }
 
     clock_t ticks;
