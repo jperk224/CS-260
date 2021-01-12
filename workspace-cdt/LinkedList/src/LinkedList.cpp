@@ -188,7 +188,7 @@ void LinkedList::Remove(string bidId) {
 		// iterate over each list node in succession
 		while (currentNode != nullptr) {
 			// if the current node's 'next' node is the one to be removed
-			// update the pointers and remove the next bid
+			// update the pointers and remove the 'next' bid
 			if (currentNode->next->bid.bidId.compare(bid.bidId) == 0) {
 				Node* tempPointer = currentNode->next;
 				currentNode->next = currentNode->next->next;
@@ -199,6 +199,8 @@ void LinkedList::Remove(string bidId) {
 
 			currentNode = currentNode->next;
 		}
+
+		size--;
 
 	} else {
 		cout << "Bid Id " << bidId << " not found." << endl;
