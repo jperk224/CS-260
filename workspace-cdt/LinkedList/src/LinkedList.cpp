@@ -164,15 +164,64 @@ void LinkedList::PrintList() {
  */
 void LinkedList::Remove(string bidId) {
     // FIXME (6): Implement remove logic
+
+	Bid bid = this->Search(bidId);
+
+	if (!bid.bidId.empty()) {			// bid was found, remove it
+		cout << "Removed bid " << bidId << endl;
+		displayBid(bid);				// display the bid removed
+
+		// remove the bid
+		// Iterate over the bids
+		Node* currentNode = this->head;		// start at the list head
+
+		// iterate over each list node in succession
+		while (currentNode != nullptr) {
+			// if the current node's 'next' node is the one to be removed
+			// update the pointers and remove the next bid
+			if (currentNode->next->bid.bidId.compare(bid.bidId) == 0) {
+				Node* tempPointer = currentNode->next;
+				currentNode->next = currentNode->next->next;
+				delete tempPointer;
+				// early return
+				return;
+			}
+
+			currentNode = currentNode->next;
+		}
+
+	} else {
+		cout << "Bid Id " << bidId << " not found." << endl;
+	}
+
+	return;
 }
 
 /**
  * Search for the specified bidId
  *
  * @param bidId The bid id to search for
+ * Returns the bid if found, empty Bid otherwise
  */
 Bid LinkedList::Search(string bidId) {
     // FIXME (7): Implement search logic
+	Bid* bid = new Bid();				// bid to be returned
+
+	// Iterate over the bids
+	Node* currentNode = this->head;		// start at the list head
+
+	// iterate over each list node in succession
+	while (currentNode != nullptr) {
+		// early return of found bid if found
+		if (currentNode->bid.bidId.compare(bidId) == 0) {
+			*bid = currentNode->bid;
+			return *bid;
+		}
+
+		currentNode = currentNode->next;
+	}
+
+	return *bid;						// return empty if not found
 }
 
 /**
@@ -291,7 +340,10 @@ int main(int argc, char* argv[]) {
         break;
     default:
         csvPath = "eBid_Monthly_Sales_Dec_2016.csv";
-        bidKey = "98109";
+//        bidKey = "98109";
+//        bidKey = "98223";
+        bidKey = "97991";
+//        bidKey = "12345";  // For testing empty case
     }
 
     clock_t ticks;
