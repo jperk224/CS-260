@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
             break;
         case 2:
             // Initialize a timer variable before loading bids
-        	ticks = clock(); 	// current clock time prior to method call
+        	ticks = clock(); 	// current clock time prior to loadBids call
 
             // Complete the method call to load the bids
         	bidRecords = loadBids(csvPath);
