@@ -44,7 +44,7 @@ void displayBid(Bid bid);
 class LinkedList {
 
 private:
-    // FIXME (1): Internal structure for list entries, housekeeping variables
+    // Internal structure for list entries, housekeeping variables
 	// (i.e. the list node)
 	struct Node {
 		Bid bid;			// the actual Bid
@@ -55,7 +55,7 @@ private:
 			next = nullptr;
 		}
 
-		Node(Bid bid) {		// initialize a node with a bid
+		Node(Bid bid) {		// initialize a node with a bid if provided
 			this->bid = bid;
 			next = nullptr;
 		}
@@ -80,7 +80,7 @@ public:
  * Default constructor
  */
 LinkedList::LinkedList() {
-    // FIXME (2): Initialize housekeeping variables
+    // Initialize housekeeping variables
 	// list is initially empty (i.e. no head or tail, and no elements)
 	this->head = nullptr;
 	this->tail = nullptr;
@@ -98,9 +98,9 @@ LinkedList::~LinkedList() {
  * @param bid The bid to be appended to the list
  */
 void LinkedList::Append(Bid bid) {
-    // FIXME (3): Implement append logic
+    // Implement append logic
 
-	// initialize a new node to hold the bid
+	// initialize a new node to hold the bid passed in
 	Node* node = new Node(bid);
 
 	// Append the node to the list
@@ -123,9 +123,9 @@ void LinkedList::Append(Bid bid) {
  * @param bid The bid to be prepended to the list
  */
 void LinkedList::Prepend(Bid bid) {
-    // FIXME (4): Implement prepend logic
+    // Implement prepend logic
 
-	// initialize a new node to hold the bid
+	// initialize a new node to hold the bid passed in
 	Node* node = new Node(bid);
 
 	// Prepend the node to the beginning of the list
@@ -145,10 +145,10 @@ void LinkedList::Prepend(Bid bid) {
  * Simple output of all bids in the list
  */
 void LinkedList::PrintList() {
-    // FIXME (5): Implement print logic
+    // Implement print logic
 	Node* currentNode = this->head;		// start at the list head
 
-	// iterate over each list node in succession
+	// iterate over each list node in succession and display the bid
 	while (currentNode != nullptr) {
 		displayBid(currentNode->bid);
 		currentNode = currentNode->next;
@@ -163,7 +163,7 @@ void LinkedList::PrintList() {
  * @param bidId The bid id to remove from the list
  */
 void LinkedList::Remove(string bidId) {
-    // FIXME (6): Implement remove logic
+    // Implement remove logic
 
 	Bid bid = this->Search(bidId);
 
@@ -171,7 +171,7 @@ void LinkedList::Remove(string bidId) {
 		cout << "Removed bid " << bidId << endl;
 		displayBid(bid);				// display the bid removed
 
-		// special case list head
+		// special case list head is removed
 		if (this->head != nullptr) {
 			if (head->bid.bidId.compare(bidId) == 0) {
 				Node* tempPointer = this->head;
@@ -217,7 +217,7 @@ void LinkedList::Remove(string bidId) {
  * Returns the bid if found, empty Bid otherwise
  */
 Bid LinkedList::Search(string bidId) {
-    // FIXME (7): Implement search logic
+    // Implement search logic
 	Bid* bid = new Bid();				// bid to be returned
 
 	// Iterate over the bids
@@ -234,7 +234,7 @@ Bid LinkedList::Search(string bidId) {
 		currentNode = currentNode->next;
 	}
 
-	return *bid;						// return empty if not found
+	return *bid;						// return empty bid if not found
 }
 
 /**
