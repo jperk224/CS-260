@@ -147,6 +147,38 @@ void quickSort(vector<Bid>& bids, int begin, int end) {
  *            instance to be sorted
  */
 void selectionSort(vector<Bid>& bids) {
+
+	// track the index of the minimum value for each iteration
+	unsigned int minValIndex;
+	Bid* temp = new Bid();					// temp Bid holder for sorting
+
+	// outer loop to iterate over each vector element
+	for (unsigned int i = 0; i < bids.size(); ++i) {
+		minValIndex = i;		// start with min val at current iteration index
+
+		// inner loop to compare each vector element against the current iteration
+		for (unsigned int j = i + 1; j < bids.size(); ++j) {
+			// compare the current outer iteration element against subsequent
+			// elements in the list; make note of the minimum value index
+			if (bids.at(j).title.compare(bids.at(minValIndex).title) < 0) {
+				// element at index j is smallest found so far,
+				// set minValIndex to new minimum value
+				minValIndex = j;
+			}
+		}
+
+		// set current i iteration to minimum value (i.e. element at j)
+		// if there's been a change
+		// everything less than current i iteration is sorted
+		if (minValIndex != i) {
+//			swap(bids.at(i), bids.at(minValIndex));
+			*temp = bids.at(i);
+			bids.at(i) = bids.at(minValIndex);
+			bids.at(minValIndex) = *temp;
+		}
+	}
+
+	return;
 }
 
 /**
@@ -222,6 +254,20 @@ int main(int argc, char* argv[]) {
             break;
 
         // FIXME (1b): Invoke the selection sort and report timing results
+        case 3:
+        	// Initialize a timer variable before sorting bids
+        	ticks = clock();
+
+        	// sort the bids
+        	selectionSort(bids);
+
+        	// Calculate elapsed time and display the result
+        	ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+        	cout << "Bids sorted by title." << endl;
+        	cout << "time: " << ticks << " clock ticks" << endl;
+        	cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+
+        	break;
 
         // FIXME (2b): Invoke the quick sort and report timing results
 
