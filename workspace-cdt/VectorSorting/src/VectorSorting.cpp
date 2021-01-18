@@ -171,7 +171,6 @@ void selectionSort(vector<Bid>& bids) {
 		// if there's been a change
 		// everything less than current i iteration is sorted
 		if (minValIndex != i) {
-//			swap(bids.at(i), bids.at(minValIndex));
 			*temp = bids.at(i);
 			bids.at(i) = bids.at(minValIndex);
 			bids.at(minValIndex) = *temp;
@@ -246,7 +245,7 @@ int main(int argc, char* argv[]) {
 
         case 2:
             // Loop and display the bids read
-            for (int i = 0; i < bids.size(); ++i) {
+            for (unsigned int i = 0; i < bids.size(); ++i) {
                 displayBid(bids[i]);
             }
             cout << endl;
@@ -263,7 +262,7 @@ int main(int argc, char* argv[]) {
 
         	// Calculate elapsed time and display the result
         	ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-        	cout << "Bids sorted by title." << endl;
+        	cout << "Sorted " << bids.size() << " bids alphabetically by title." << endl;
         	cout << "time: " << ticks << " clock ticks" << endl;
         	cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
 
