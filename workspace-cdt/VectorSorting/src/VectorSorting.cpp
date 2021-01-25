@@ -91,7 +91,7 @@ vector<Bid> loadBids(string csvPath) {
 
     try {
         // loop to read rows of a CSV file
-        for (int i = 0; i < file.rowCount(); i++) {
+        for (unsigned int i = 0; i < file.rowCount(); i++) {
 
             // Create a data structure and add to the collection of bids
             Bid bid;
@@ -121,7 +121,54 @@ vector<Bid> loadBids(string csvPath) {
  * @param end Ending index to partition
  */
 int partition(vector<Bid>& bids, int begin, int end) {
+	// start at the extreme ends of the list and work in to the midpoint,
+	// swapping elements along the way where necessary
+	int low = begin;
+	int high = end;
 
+	// placeholder for swapping bids
+	Bid* temp = new Bid();
+
+	int midPoint = (begin + (end - begin)) / 2;
+	Bid pivotValue = bids.at(midPoint);
+
+	// flag for looping
+	bool done = false;
+
+	while (!done) {
+		// compare the low point to the midpoint
+
+		// keep incrementing low while title is less than the pivot value title
+		while (bids.at(low).title.compare(pivotValue.title) < 0) {
+			++low;
+		}
+
+		// keep decrementing high while title is greater than the pivot value title
+		while (pivotValue.title.compare(bids.at(high).title) < 0) {
+			--high;
+		}
+
+		// once the low counter meets or exceeds the high counter
+		// the partitions have been defined (i.e. values lower than pivotValue
+		// are in the low partition and values higher than pivotValue are in
+		// the higher partition; flip the flag to exit the loop
+		if (low >= high) {
+			done = true;
+
+		} else {
+			// swap the element at the low index and the high index to
+			// place the bid value in the the proper partition
+			*temp = bids.at(low);
+			bids.at(low) = bids.at(high);
+			bids.at(high) = *temp;
+		}
+
+		++low;
+		--high;
+	}
+
+	// return the highest index of the low partition
+	return high;
 }
 
 /**
@@ -134,9 +181,26 @@ int partition(vector<Bid>& bids, int begin, int end) {
  * @param end the ending index to sort on
  */
 void quickSort(vector<Bid>& bids, int begin, int end) {
+
+	int midPoint = 0;
+
+	// base case/recursion exit condition
+	// if one bid or less, exit
+	if (begin >= end) {
+		return;
+	}
+
+	// Partition the vector
+	// midPoint is the location of the last (i.e. highest)
+	// indexed element in the low partition
+
+	midPoint = partition(bids, begin, end);
+
+	quickSort(bids, begin, midPoint);
+	quickSort(bids, midPoint + 1, end);
 }
 
-// FIXME (1a): Implement the selection sort logic over bid.title
+// Implement the selection sort logic over bid.title
 
 /**
  * Perform a selection sort on bid title
@@ -252,7 +316,7 @@ int main(int argc, char* argv[]) {
 
             break;
 
-        // FIXME (1b): Invoke the selection sort and report timing results
+        // Invoke the selection sort and report timing results
         case 3:
         	// Initialize a timer variable before sorting bids
         	ticks = clock();
@@ -268,8 +332,22 @@ int main(int argc, char* argv[]) {
 
         	break;
 
-        // FIXME (2b): Invoke the quick sort and report timing results
+        // Invoke the quick sort and report timing results
+        // Invoke the selection sort and report timing results
+        case 4:
+        	// Initialize a timer variable before sorting bids
+        	ticks = clock();
 
+        	// sort the bids
+        	quickSort(bids, 0, bids.size() - 1);
+
+        	// Calculate elapsed time and display the result
+        	ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+        	cout << "Sorted " << bids.size() << " bids alphabetically by title." << endl;
+        	cout << "time: " << ticks << " clock ticks" << endl;
+        	cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+
+        	break;
         }
     }
 
