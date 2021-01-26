@@ -48,6 +48,36 @@ class HashTable {
 
 private:
     // FIXME (1): Define structures to hold bids
+	struct BidNode {
+		Bid bid;
+		unsigned int key;		// key value for hashing
+		BidNode* next;			// for implementing collision chaining
+
+		// default constructor
+		BidNode() {
+			this->key = 0;
+			this->next = nullptr;
+		}
+
+		// initialize a bid node with a bid
+		BidNode(Bid bid) {
+			BidNode();			// initialize an empty node with null next
+			this->bid = bid;	// set the bid in the node to the bid passed in
+		}
+
+		// initialize with a bid and a key
+		BidNode(Bid bid, unsigned int key) {
+			BidNode();
+			this->bid = bid;
+			this-> key = key;			// set key to the key passed in
+		}
+	};
+
+	vector<BidNode> bidNodes;			// vector to hold bid nodes
+
+	// FIXME: Define the hash table size for the modulo hash algorithm
+	// DEFAULT_SIZE is 179 (smaller monthly file for testing)
+	unsigned int tableSize = DEFAULT_SIZE;
 
     unsigned int hash(int key);
 
@@ -72,6 +102,10 @@ HashTable::HashTable() {
  */
 HashTable::~HashTable() {
     // FIXME (3): Implement logic to free storage when class is destroyed
+	// erase function removes specified elements from the vector
+	// begin() denotes removal of the first element in the vector
+	this->bidNodes.erase(this->bidNodes.begin());
+	return;
 }
 
 /**
@@ -85,6 +119,8 @@ HashTable::~HashTable() {
  */
 unsigned int HashTable::hash(int key) {
     // FIXME (4): Implement logic to calculate a hash value
+	// use modulo division to return the remainder of the key by hash table size
+	return key % this->tableSize;
 }
 
 /**
