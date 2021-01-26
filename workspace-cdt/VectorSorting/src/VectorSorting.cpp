@@ -111,7 +111,7 @@ vector<Bid> loadBids(string csvPath) {
     return bids;
 }
 
-// FIXME (2a): Implement the quick sort logic over bid.title
+// Implement the quick sort logic over bid.title
 
 /**
  * Partition the vector of bids into two parts, low and high
