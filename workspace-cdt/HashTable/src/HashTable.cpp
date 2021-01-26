@@ -130,6 +130,23 @@ unsigned int HashTable::hash(int key) {
  */
 void HashTable::Insert(Bid bid) {
     // FIXME (5): Implement logic to insert a bid
+
+	// create the key- a hash of the bid's bidId
+	// requires conversion of bidId from string object to string to int
+	// key denotes bucket in the table to insert the bid
+	unsigned int key = this->hash(atoi(bid.bidId.c_str()));
+
+	// check whether the bucket presently holds data
+	// if it does, chain a linked list together
+	BidNode* keyNode = &(this->bidNodes.at(key));		// address of node at desired bucket
+
+	if (keyNode == nullptr) {							// bucket is empty
+		BidNode* newNode = new BidNode(bid, key);
+	} else {											// bucket is not empty, chain the BidNodes
+
+	}
+
+	return;
 }
 
 /**
