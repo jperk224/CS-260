@@ -21,6 +21,7 @@ using namespace std;
 //============================================================================
 
 const unsigned int DEFAULT_SIZE = 179;
+const unsigned int DEFAULT_KEY = UINT_MAX;			// max unsigned int value
 
 // forward declarations
 double strToDouble(string str, char ch);
@@ -55,7 +56,7 @@ private:
 
 		// default constructor
 		BidNode() {
-			this->key = 0;
+			this->key = DEFAULT_KEY;
 			this->next = nullptr;
 		}
 
@@ -138,12 +139,22 @@ void HashTable::Insert(Bid bid) {
 
 	// check whether the bucket presently holds data
 	// if it does, chain a linked list together
-	BidNode* keyNode = &(this->bidNodes.at(key));		// address of node at desired bucket
+	BidNode* keyNode = &(this->bidNodes.at(key));		// desired node bucket
 
-	if (keyNode == nullptr) {							// bucket is empty
+	if (keyNode == nullptr) {							// bucket is empty, insert node at desired bucket
 		BidNode* newNode = new BidNode(bid, key);
-	} else {											// bucket is not empty, chain the BidNodes
-
+		bidNodes.insert(bidNodes.begin() + key, *newNode);
+	} else {
+		if (keyNode->key == DEFAULT_KEY) {				// Bucket has an unused node, replace it
+			keyNode->key = key;							// with populated node for this bid
+			keyNode->bid = bid;
+			keyNode->next = nullptr;
+		} else {										// Chain the nodes in the desired bucket
+			while (keyNode->next != nullptr) {			// iterate to the end of the chain
+				keyNode = keyNode->next;
+			}
+			keyNode->next = new BidNode(bid, key);		// append a new node with bid to end of last node
+		}
 	}
 
 	return;
