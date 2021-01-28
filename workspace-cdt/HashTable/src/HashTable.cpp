@@ -76,7 +76,7 @@ private:
 
 	vector<BidNode> bidNodes;			// vector to hold bid nodes
 
-	// FIXME: Define the hash table size for the modulo hash algorithm
+	// Define the hash table size for the modulo hash algorithm
 	// DEFAULT_SIZE is 179 (smaller monthly file for testing)
 	unsigned int tableSize = DEFAULT_SIZE;
 
@@ -96,6 +96,7 @@ public:
  */
 HashTable::HashTable() {
     // FIXME (2): Initialize the structures used to hold bids
+	bidNodes.resize(tableSize);					// resize the vector to the desired size
 }
 
 /**
@@ -165,6 +166,8 @@ void HashTable::Insert(Bid bid) {
  */
 void HashTable::PrintAll() {
     // FIXME (6): Implement logic to print all bids
+
+	return;
 }
 
 /**
@@ -174,6 +177,8 @@ void HashTable::PrintAll() {
  */
 void HashTable::Remove(string bidId) {
     // FIXME (7): Implement logic to remove a bid
+
+	return;
 }
 
 /**
@@ -185,6 +190,30 @@ Bid HashTable::Search(string bidId) {
     Bid bid;
 
     // FIXME (8): Implement logic to search for and return a bid
+    unsigned int key = this->hash(atoi(bidId.c_str()));		// the key for the bidId passed in
+
+    BidNode* searchNode = &(this->bidNodes.at(key));
+
+    if (searchNode == nullptr ||
+    	searchNode->key == DEFAULT_KEY) {					// no node found or is found but unused
+    	return bid;											// return empty bid
+    }
+
+    if (searchNode != nullptr && 							// node found, is not empty
+    	searchNode->key != DEFAULT_KEY &&					// and matches the bidId argument
+		searchNode->bid.bidId.compare(bidId) == 0) {
+
+    	bid = searchNode->bid;								// return the bid found
+
+    } else {												// node is found but buried in chain
+    	while (searchNode != nullptr) {
+    		if (searchNode->key != DEFAULT_KEY &&
+    			searchNode->bid.bidId.compare(bidId) == 0) {	// node matches, return the bid
+    				return searchNode->bid;
+    		}
+    		searchNode = searchNode->next;
+    	}
+    }
 
     return bid;
 }
@@ -263,19 +292,21 @@ double strToDouble(string str, char ch) {
 int main(int argc, char* argv[]) {
 
     // process command line arguments
-    string csvPath, bidKey;
+    string csvPath, searchValue;
     switch (argc) {
     case 2:
         csvPath = argv[1];
-        bidKey = "98109";
+        searchValue = "98109";
         break;
     case 3:
         csvPath = argv[1];
-        bidKey = argv[2];
+        searchValue = argv[2];
         break;
     default:
         csvPath = "eBid_Monthly_Sales_Dec_2016.csv";
-        bidKey = "98109";
+//        searchValue = "98109";
+//        searchValue = "97951";
+        searchValue = "98190";
     }
 
     // Define a timer variable
@@ -321,14 +352,14 @@ int main(int argc, char* argv[]) {
         case 3:
             ticks = clock();
 
-            bid = bidTable->Search(bidKey);
+            bid = bidTable->Search(searchValue);
 
             ticks = clock() - ticks; // current clock ticks minus starting clock ticks
 
             if (!bid.bidId.empty()) {
                 displayBid(bid);
             } else {
-                cout << "Bid Id " << bidKey << " not found." << endl;
+                cout << "Bid Id " << searchValue << " not found." << endl;
             }
 
             cout << "time: " << ticks << " clock ticks" << endl;
@@ -336,7 +367,7 @@ int main(int argc, char* argv[]) {
             break;
 
         case 4:
-            bidTable->Remove(bidKey);
+            bidTable->Remove(searchValue);
             break;
         }
     }
