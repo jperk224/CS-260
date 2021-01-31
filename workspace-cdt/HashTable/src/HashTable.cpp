@@ -51,7 +51,7 @@ void displayBid(Bid bid);
 class HashTable {
 
 private:
-    // FIXME (1): Define structures to hold bids
+    //(1): Define structures to hold bids
 	struct BidNode {
 		Bid bid;
 		unsigned int key;		// key value for hashing
@@ -98,7 +98,7 @@ public:
  * Default constructor
  */
 HashTable::HashTable() {
-    // FIXME (2): Initialize the structures used to hold bids
+    // (2): Initialize the structures used to hold bids
 	bidNodes.resize(tableSize);					// resize the vector to the desired size
 }
 
@@ -106,7 +106,7 @@ HashTable::HashTable() {
  * Destructor
  */
 HashTable::~HashTable() {
-    // FIXME (3): Implement logic to free storage when class is destroyed
+    // (3): Implement logic to free storage when class is destroyed
 	// erase function removes specified elements from the vector
 	// begin() denotes removal of the first element in the vector
 	this->bidNodes.erase(this->bidNodes.begin());
@@ -123,7 +123,7 @@ HashTable::~HashTable() {
  * @return The calculated hash
  */
 unsigned int HashTable::hash(int key) {
-    // FIXME (4): Implement logic to calculate a hash value
+    // (4): Implement logic to calculate a hash value
 	// use modulo division to return the remainder of the key by hash table size
 	return key % this->tableSize;
 }
@@ -134,7 +134,7 @@ unsigned int HashTable::hash(int key) {
  * @param bid The bid to insert
  */
 void HashTable::Insert(Bid bid) {
-    // FIXME (5): Implement logic to insert a bid
+    // (5): Implement logic to insert a bid
 
 	// create the key- a hash of the bid's bidId
 	// requires conversion of bidId from string object to string to int
@@ -168,7 +168,7 @@ void HashTable::Insert(Bid bid) {
  * Print all bids
  */
 void HashTable::PrintAll() {
-    // FIXME (6): Implement logic to print all bids
+    // (6): Implement logic to print all bids
 	// Iterate over each index in the vector and loop through
 	// potential chains
 
@@ -212,19 +212,22 @@ void HashTable::Remove(string bidId) {
 	   	searchNode->key != DEFAULT_KEY &&					// and matches the bidId argument
 		searchNode->bid.bidId.compare(bidId) == 0) {
 
-		// FIXME: how to remove?							// remove the bid found
-		return;
+		// remove the bid found
+		delete searchNode;
 
-	} else {												// node is found but buried in chain
+	} else {													// node is found but buried in chain
+
 	   	while (searchNode != nullptr) {
-	   		if (searchNode->key != DEFAULT_KEY &&
-	   			searchNode->bid.bidId.compare(bidId) == 0) {	// node matches, return the bid
-	   				// FIXME: how to remove?
-	   			return;
+	   		if (searchNode->next->key != DEFAULT_KEY &&
+	   			searchNode->next->bid.bidId.compare(bidId) == 0) {	// next node matches, remove the bid
+	   				searchNode->next = searchNode->next->next;
+	   				delete searchNode->next;
 	   		}
 	   		searchNode = searchNode->next;
 	   	}
 	}
+
+	cout << "Bid ID " << bidId << " removed." << endl;
 
 	return;
 }
@@ -237,7 +240,7 @@ void HashTable::Remove(string bidId) {
 Bid HashTable::Search(string bidId) {
     Bid bid;
 
-    // FIXME (8): Implement logic to search for and return a bid
+    // (8): Implement logic to search for and return a bid
     unsigned int key = this->hash(atoi(bidId.c_str()));		// the key for the bidId passed in
 
     BidNode* searchNode = &(this->bidNodes.at(key));
