@@ -26,6 +26,7 @@ const unsigned int DEFAULT_KEY = UINT_MAX;			// max unsigned int value
 // forward declarations
 double strToDouble(string str, char ch);
 
+
 // define a structure to hold bid information
 struct Bid {
     string bidId; // unique identifier
@@ -36,6 +37,8 @@ struct Bid {
         amount = 0.0;
     }
 };
+
+void displayBid(Bid bid);
 
 //============================================================================
 // Hash Table class definition
@@ -166,6 +169,24 @@ void HashTable::Insert(Bid bid) {
  */
 void HashTable::PrintAll() {
     // FIXME (6): Implement logic to print all bids
+	// Iterate over each index in the vector and loop through
+	// potential chains
+
+	for (unsigned int key = 0; key < this->bidNodes.size(); ++key) {
+		BidNode* iterationNode = &(this->bidNodes.at(key));
+		if (iterationNode == nullptr ||
+			iterationNode->key == DEFAULT_KEY) {				// bucket is empty or unused, do nothing
+			continue;
+		} else if (iterationNode->next == nullptr) {			// bucket has a single node
+			displayBid(iterationNode->bid);
+		} else {											// Chain of nodes in the desired bucket
+			while (iterationNode->next != nullptr) {			// iterate to the end of the chain
+				displayBid(iterationNode->bid);
+				iterationNode = iterationNode->next;
+			}
+			displayBid(iterationNode->bid);					// print the last node in the chain
+		}
+	}
 
 	return;
 }
@@ -177,6 +198,33 @@ void HashTable::PrintAll() {
  */
 void HashTable::Remove(string bidId) {
     // FIXME (7): Implement logic to remove a bid
+	unsigned int key = this->hash(atoi(bidId.c_str()));		// the key for the bidId passed in
+
+	BidNode* searchNode = &(this->bidNodes.at(key));
+
+	if (searchNode == nullptr ||
+	  	searchNode->key == DEFAULT_KEY) {					// no node found or is found but unused
+	   	cout << "Bid ID " << bidId << " not found.";
+	   	return;
+	}
+
+	if (searchNode != nullptr && 							// node found, is not empty
+	   	searchNode->key != DEFAULT_KEY &&					// and matches the bidId argument
+		searchNode->bid.bidId.compare(bidId) == 0) {
+
+		// FIXME: how to remove?							// remove the bid found
+		return;
+
+	} else {												// node is found but buried in chain
+	   	while (searchNode != nullptr) {
+	   		if (searchNode->key != DEFAULT_KEY &&
+	   			searchNode->bid.bidId.compare(bidId) == 0) {	// node matches, return the bid
+	   				// FIXME: how to remove?
+	   			return;
+	   		}
+	   		searchNode = searchNode->next;
+	   	}
+	}
 
 	return;
 }
