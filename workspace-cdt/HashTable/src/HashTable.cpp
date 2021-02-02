@@ -197,7 +197,7 @@ void HashTable::PrintAll() {
  * @param bidId The bid id to search for
  */
 void HashTable::Remove(string bidId) {
-    // FIXME (7): Implement logic to remove a bid
+    // (7): Implement logic to remove a bid
 	unsigned int key = this->hash(atoi(bidId.c_str()));		// the key for the bidId passed in
 
 	BidNode* searchNode = &(this->bidNodes.at(key));
