@@ -25,3 +25,8 @@
 /workspace-cdt/HashTable/.project
 /workspace-cdt/HashTable/.settings
 /workspace-cdt/HashTable/*.csv
+/workspace-cdt/BinarySearchTree/.cproject
+/workspace-cdt/BinarySearchTree/.gitignore
+/workspace-cdt/BinarySearchTree/.project
+/workspace-cdt/BinarySearchTree/.settings
+/workspace-cdt/BinarySearchTree/*.csv
