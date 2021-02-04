@@ -32,7 +32,18 @@ struct Bid {
 };
 
 // FIXME (1): Internal structure for tree node
+// Binary tree nodes have up to two child nodes- left and right
 struct Node {
+	Bid bid;		// the node's present bid
+	// pointers to left and right nodes
+	Node* left;
+	Node* right;
+
+	// default constructor
+	Node() {
+		this->left = nullptr;
+		this->right = nullptr;
+	}
 };
 
 //============================================================================
@@ -66,6 +77,7 @@ public:
  */
 BinarySearchTree::BinarySearchTree() {
     // initialize housekeeping variables
+	this->root = nullptr;
 }
 
 /**
