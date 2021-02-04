@@ -44,6 +44,13 @@ struct Node {
 		this->left = nullptr;
 		this->right = nullptr;
 	}
+
+	// construct Node when given a Bid argument
+	Node(Bid bid) {
+		this->bid = bid;
+		this->left = nullptr;
+		this->right = nullptr;
+	}
 };
 
 //============================================================================
@@ -92,11 +99,20 @@ BinarySearchTree::~BinarySearchTree() {
  */
 void BinarySearchTree::InOrder() {
 }
+
 /**
  * Insert a bid
  */
 void BinarySearchTree::Insert(Bid bid) {
     // FIXME (2a) Implement inserting a bid into the tree
+	if (this->root == nullptr) {		// tree is empty
+		this->root = new Node(bid);
+	} else {
+		// call to private recursive method that will systematically
+		// insert the bid in the intended order for the binary tree
+		this->addNode(root, bid);
+	}
+	return;
 }
 
 /**
@@ -124,6 +140,25 @@ Bid BinarySearchTree::Search(string bidId) {
  */
 void BinarySearchTree::addNode(Node* node, Bid bid) {
     // FIXME (2b) Implement inserting a bid into the tree
+
+	// bidId is less than current node, make it a left subtree node
+	if (node->bid.bidId.compare(bid.bidId) > 0) {
+		if (node->left == nullptr) {		// no left subtree node, assign bid there in a new node
+			node->left = new Node(bid);
+		} else {							// a left node exists, go deeper in the tree
+			this->addNode(node->left, bid);	// recursive call with current left sub node as start
+		}
+	}
+	// bidId is greater than current node, make it a right subtree node
+	else {
+		if (node->right == nullptr) {			// no right subtree node, assign bid there in a new node
+			node->right = new Node(bid);
+		} else {								// a right node exists, go deeper in tree
+			this->addNode(node->right, bid);	// recursive call with current right sub node as start
+		}
+	}
+
+	return;
 }
 void BinarySearchTree::inOrder(Node* node) {
 }
