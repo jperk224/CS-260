@@ -129,7 +129,25 @@ Bid BinarySearchTree::Search(string bidId) {
     // FIXME (3) Implement searching the tree for a bid
 
 	Bid bid;
-    return bid;
+
+	Node* current = this->root;		// start at the root
+	while (current != nullptr) {
+		if (current->bid.bidId.compare(bidId) == 0) {	// bidId matches
+			bid = current->bid;
+			return bid;
+		} else {
+			// bidId is less than current node, move down the left side
+			if (current->bid.bidId.compare(bidId) > 0) {
+				current = current->left;
+			}
+			// bidId is greater than current node, move down the right side
+			else {
+				current = current->right;
+			}
+		}
+	}
+
+    return bid;		// if reached, returns an empty bid, nothing was found
 }
 
 /**
