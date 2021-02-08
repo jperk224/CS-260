@@ -6,8 +6,9 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#include <iostream>
+
 #include <time.h>
+#include <iostream>
 
 #include "CSVparser.hpp"
 
@@ -120,6 +121,9 @@ void BinarySearchTree::Insert(Bid bid) {
  */
 void BinarySearchTree::Remove(string bidId) {
     // FIXME (4a) Implement removing a bid from the tree
+	this->removeNode(root, bidId);
+
+	return;
 }
 
 /**
@@ -180,6 +184,58 @@ void BinarySearchTree::addNode(Node* node, Bid bid) {
 }
 void BinarySearchTree::inOrder(Node* node) {
 }
+
+Node* BinarySearchTree::removeNode(Node* node, string bidId) {
+	Node* temp = nullptr;			// temp node for swapping
+
+	// if tree is empty, return the nullptr
+	if (node == nullptr) {
+		return node;
+	}
+
+	// bidId is less than current node, traverse the left subtree node
+	if (node->bid.bidId.compare(bidId) > 0) {
+		node->left = removeNode(node->left, bidId);
+	}
+	// bidId is greater than current node, traverse the right subtree node
+	else if (node->bid.bidId.compare(bidId) < 0) {
+		node->right = removeNode(node->right, bidId);
+	}
+	// bidId matches, remove the node
+	else {
+		// node has no children
+		if (node->left == nullptr && node->right == nullptr) {
+			delete node;
+			node = nullptr;
+		}
+		// node has a left child
+		else if (node->left != nullptr && node->right == nullptr) {
+			temp = node->left;
+			node = temp;
+			delete temp;
+		}
+		// node has a right child
+		else if (node->left == nullptr && node->right != nullptr) {
+			temp = node->right;
+			node = temp;
+			delete temp;
+		}
+		// node has 2 children
+		// find the left most leaf of the right subtree
+		else {
+			temp = node->right;
+			while (temp->left != nullptr) {
+				temp = temp->left;
+			}
+			node->bid = temp->bid;
+			node->right = removeNode(node->right, temp->bid.bidId);
+		}
+	}
+
+	return node;
+}
+
+
 //============================================================================
 // Static methods used for testing
 //============================================================================
